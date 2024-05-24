@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <h1>formulario</h1>
+        <br>
+        <form id="form">
+            <br>
+            <input name="celd" id="celd" type="text">
+             <br>
+            <input name="pass" id="pass" type="text">
+             <br>
+            <input type="submit">
+            <p id="mensaje"></p>
+        </form>
+    </div>
+    <script>
+         document.getElementById('form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+
+    fetch('/verificar', {
+        method: 'POST',
+        body: JSON.stringify(Object.fromEntries(formData.entries())),
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(response => response.text())
+    .then(ok => {
+        const mensaje = document.getElementById('mensaje');
+        if ("ok") {
+            mensaje.innerHTML = `
+            <div class="alert alert-success" role="alert">
+               agregado
+            </div>`;
+        } else if('err'){
+            mensaje.innerHTML = `
+            <div class="alert alert-danger" role="alert">
+               usuario o contraseña incorrectos
+            </div>`;                                           
+        }else if('vacio'){
+            mensaje.innerHTML = `
+            <div class="alert alert-danger" role="alert">
+              no pueden estar los campos vacios
+            </div>`;       
+        }
+    })
+    .catch(error => {
+        console.error(error);
+        alert('Error al enviar el formulario.'); 
+    });
+});
+        </script>
+
+
+</body>
+</html>
