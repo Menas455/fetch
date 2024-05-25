@@ -24,7 +24,7 @@
     e.preventDefault();
     const formData = new FormData(this);
 
-    fetch('/verificar', {
+    fetch('/', {
         method: 'POST',
         body: JSON.stringify(Object.fromEntries(formData.entries())),
         headers: {
@@ -32,31 +32,33 @@
         }
     })
     .then(response => response.text())
-    .then(ok => {
+    .then(data => {
+        
         const mensaje = document.getElementById('mensaje');
-        if ("ok") {
+        if (data === 'success') {
             mensaje.innerHTML = `
             <div class="alert alert-success" role="alert">
-               agregado
+               iniciado
             </div>`;
-        } else if('err'){
+        } else if(data === 'err'){
             mensaje.innerHTML = `
             <div class="alert alert-danger" role="alert">
                usuario o contraseña incorrectos
             </div>`;                                           
-        }else if('vacio'){
+        }else if(data === 'vacio'){
             mensaje.innerHTML = `
             <div class="alert alert-danger" role="alert">
-              no pueden estar los campos vacios
+            vacio
             </div>`;       
         }
+        
+
     })
     .catch(error => {
         console.error(error);
-        alert('Error al enviar el formulario.'); 
     });
 });
-        </script>
+    </script>
 
 
 </body>
